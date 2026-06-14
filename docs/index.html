@@ -57,23 +57,192 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <!-- Styling -->
     <style>
         /* Design Tokens & CSS Reset */
         :root {
-            --piano-black: #0c0e10;
-            --slate-gray: #15181b;
-            --ivory-cream: #faf8f5;
-            --brass-gold: #c5a059;
-            --brass-gold-hover: #b48e47;
-            --border-glow: rgba(197, 160, 89, 0.15);
-            --border-warm: rgba(197, 160, 89, 0.25);
-            --text-muted: #a3aab2;
+            --piano-black-rgb: 12, 14, 16;
+            --slate-gray-rgb: 21, 24, 27;
+            --ivory-cream-rgb: 250, 248, 245;
+            --text-muted-rgb: 163, 170, 178;
+            --brass-gold-rgb: 197, 160, 89;
+            --brass-gold-hover-rgb: 180, 142, 71;
+            
             --font-serif: 'Playfair Display', Georgia, serif;
             --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            --piano-black: rgb(var(--piano-black-rgb));
+            --slate-gray: rgb(var(--slate-gray-rgb));
+            --ivory-cream: rgb(var(--ivory-cream-rgb));
+            --text-muted: rgb(var(--text-muted-rgb));
+            --brass-gold: rgb(var(--brass-gold-rgb));
+            --brass-gold-hover: rgb(var(--brass-gold-hover-rgb));
+            
+            --border-glow: rgba(var(--brass-gold-rgb), 0.15);
+            --border-warm: rgba(var(--brass-gold-rgb), 0.25);
+            --shadow-opacity: 0.4;
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Classic Dark (Current Theme) */
+        body.theme-classic {
+            --piano-black-rgb: 12, 14, 16;
+            --slate-gray-rgb: 21, 24, 27;
+            --ivory-cream-rgb: 250, 248, 245;
+            --text-muted-rgb: 163, 170, 178;
+            --brass-gold-rgb: 197, 160, 89;
+            --brass-gold-hover-rgb: 180, 142, 71;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --border-glow: rgba(var(--brass-gold-rgb), 0.15);
+            --border-warm: rgba(var(--brass-gold-rgb), 0.25);
+            --shadow-opacity: 0.4;
+        }
+
+        /* Bridal Wedding (Light Theme) */
+        body.theme-bridal {
+            --piano-black-rgb: 253, 251, 247;
+            --slate-gray-rgb: 245, 239, 230;
+            --ivory-cream-rgb: 46, 42, 37;
+            --text-muted-rgb: 117, 111, 104;
+            --brass-gold-rgb: 179, 120, 102;
+            --brass-gold-hover-rgb: 153, 100, 84;
+            --font-serif: 'EB Garamond', Georgia, serif;
+            --border-glow: rgba(var(--brass-gold-rgb), 0.08);
+            --border-warm: rgba(var(--brass-gold-rgb), 0.18);
+            --shadow-opacity: 0.08;
+        }
+
+        /* Warm Sunset Theme */
+        body.theme-warm {
+            --piano-black-rgb: 28, 18, 12;
+            --slate-gray-rgb: 45, 30, 21;
+            --ivory-cream-rgb: 247, 240, 235;
+            --text-muted-rgb: 199, 181, 167;
+            --brass-gold-rgb: 217, 138, 85;
+            --brass-gold-hover-rgb: 191, 117, 69;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --border-glow: rgba(var(--brass-gold-rgb), 0.12);
+            --border-warm: rgba(var(--brass-gold-rgb), 0.22);
+            --shadow-opacity: 0.35;
+        }
+
+        /* Royal Indigo Theme */
+        body.theme-royal {
+            --piano-black-rgb: 10, 15, 29;
+            --slate-gray-rgb: 18, 26, 48;
+            --ivory-cream-rgb: 240, 244, 248;
+            --text-muted-rgb: 156, 179, 201;
+            --brass-gold-rgb: 226, 201, 116;
+            --brass-gold-hover-rgb: 201, 176, 94;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --border-glow: rgba(var(--brass-gold-rgb), 0.15);
+            --border-warm: rgba(var(--brass-gold-rgb), 0.25);
+            --shadow-opacity: 0.4;
+        }
+
+        /* Theme Picker Bar */
+        .theme-picker-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            background-color: #121416;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: top 0.3s ease;
+        }
+        
+        .theme-picker-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .theme-picker-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .preview-badge {
+            background-color: #c5a059;
+            color: #0c0e10;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+        
+        .theme-picker-options {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .theme-btn {
+            background-color: #1a1d20;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 0.35rem 0.8rem;
+            font-size: 0.72rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn:hover {
+            border-color: #c5a059;
+            background-color: #212529;
+        }
+        
+        .theme-btn.active {
+            border-color: #c5a059;
+            background-color: #c5a059;
+            color: #0c0e10;
+            font-weight: 600;
+        }
+        
+        .theme-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .theme-dot.classic { background-color: #c5a059; }
+        .theme-dot.bridal { background-color: #b37866; }
+        .theme-dot.warm { background-color: #d98a55; }
+        .theme-dot.royal { background-color: #e2c974; }
+        
+        .theme-btn.active .theme-dot {
+            border-color: rgba(0,0,0,0.2);
+        }
+
+        .form-control::placeholder,
+        .rep-search-input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
         }
 
         * {
@@ -89,6 +258,15 @@
             font-family: var(--font-sans);
             line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        .about, .repertoire, .testimonials, .contact {
+            transition: background-color 0.5s ease;
+        }
+        
+        .about-badge-card, .rep-card, .testimonial-card, .contact-form, .service-card {
+            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Utility Styles */
@@ -138,14 +316,14 @@
         /* Header / Navigation */
         .nav-wrap {
             position: fixed;
-            top: 0;
+            top: var(--theme-bar-height, 0px);
             left: 0;
             width: 100%;
             z-index: 1000;
-            background-color: rgba(12, 14, 16, 0.9);
+            background-color: rgba(var(--piano-black-rgb), 0.95);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(250, 248, 245, 0.05);
-            transition: var(--transition);
+            border-bottom: 1px solid rgba(var(--ivory-cream-rgb), 0.08);
+            transition: var(--transition), top 0.3s ease;
         }
 
         nav {
@@ -247,16 +425,17 @@
         .mob-menu {
             display: none;
             position: fixed;
-            top: 80px;
+            top: calc(80px + var(--theme-bar-height, 0px));
             left: 0;
             width: 100%;
             background-color: var(--piano-black);
-            border-bottom: 1px solid rgba(250, 248, 245, 0.05);
+            border-bottom: 1px solid rgba(var(--ivory-cream-rgb), 0.08);
             padding: 1.5rem 2rem;
             z-index: 999;
             flex-direction: column;
             gap: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, var(--shadow-opacity, 0.4));
+            transition: top 0.3s ease;
         }
 
         .mob-menu a {
@@ -268,7 +447,7 @@
             text-transform: uppercase;
             opacity: 0.8;
             padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(250, 248, 245, 0.03);
+            border-bottom: 1px solid rgba(var(--ivory-cream-rgb), 0.05);
         }
 
         .mob-menu a:last-child {
@@ -281,8 +460,9 @@
             display: flex;
             align-items: center;
             position: relative;
-            padding-top: 100px;
+            padding-top: calc(100px + var(--theme-bar-height, 0px));
             overflow: hidden;
+            transition: padding-top 0.3s ease;
         }
 
         .hero-bg {
@@ -292,7 +472,7 @@
             transform: translateX(-50%);
             width: 90vw;
             height: 60vh;
-            background: radial-gradient(circle, rgba(197, 160, 89, 0.04) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(var(--brass-gold-rgb), 0.08) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
         }
@@ -390,13 +570,13 @@
             background-color: var(--brass-gold-hover);
             border-color: var(--brass-gold-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.25);
+            box-shadow: 0 4px 20px rgba(var(--brass-gold-rgb), 0.25);
         }
 
         .btn-secondary {
             background-color: transparent;
             color: var(--ivory-cream);
-            border: 1px solid rgba(250, 248, 245, 0.15);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.2);
         }
 
         .btn-secondary:hover {
@@ -417,14 +597,14 @@
             max-width: 460px;
             border-radius: 6px;
             padding: 12px;
-            background: linear-gradient(135deg, rgba(197,160,89,0.3) 0%, rgba(22,26,29,0.5) 100%);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(135deg, rgba(var(--brass-gold-rgb), 0.3) 0%, rgba(var(--slate-gray-rgb), 0.5) 100%);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, var(--shadow-opacity, 0.4));
             transition: var(--transition);
         }
 
         .hero-frame:hover {
             transform: scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 40px var(--border-glow);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, calc(var(--shadow-opacity, 0.4) + 0.1)), 0 0 40px var(--border-glow);
         }
 
         .hero-frame img {
@@ -478,7 +658,7 @@
             padding: 2rem;
             border-radius: 6px;
             width: 100%;
-            background-color: rgba(12, 14, 16, 0.4);
+            background-color: rgba(var(--piano-black-rgb), 0.4);
             text-align: center;
         }
 
@@ -560,7 +740,7 @@
 
         .service-card {
             background-color: var(--slate-gray);
-            border: 1px solid rgba(250, 248, 245, 0.05);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.08);
             border-radius: 6px;
             padding: 3rem 2rem;
             text-align: center;
@@ -575,7 +755,7 @@
         .service-card:hover {
             transform: translateY(-5px);
             border-color: var(--brass-gold);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, var(--shadow-opacity, 0.4));
         }
 
         .service-card.popular {
@@ -674,7 +854,7 @@
         .rep-search-input {
             width: 100%;
             background-color: var(--piano-black);
-            border: 1px solid rgba(250, 248, 245, 0.1);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.15);
             padding: 1.1rem 1.5rem;
             border-radius: 30px;
             color: var(--ivory-cream);
@@ -687,7 +867,7 @@
 
         .rep-search-input:focus {
             border-color: var(--brass-gold);
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.15);
+            box-shadow: 0 0 15px rgba(var(--brass-gold-rgb), 0.15);
         }
 
         .rep-grid {
@@ -698,7 +878,7 @@
 
         .rep-card {
             background-color: var(--piano-black);
-            border: 1px solid rgba(250, 248, 245, 0.03);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.05);
             border-radius: 6px;
             padding: 2rem;
             height: fit-content;
@@ -708,7 +888,7 @@
             font-family: var(--font-serif);
             font-size: 1.25rem;
             color: var(--brass-gold);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+            border-bottom: 1px solid rgba(var(--brass-gold-rgb), 0.2);
             padding-bottom: 0.75rem;
             margin-bottom: 1.25rem;
             font-weight: 400;
@@ -753,7 +933,7 @@
             background-color: var(--slate-gray);
             border-radius: 6px;
             overflow: hidden;
-            border: 1px solid rgba(250, 248, 245, 0.03);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.05);
             transition: var(--transition);
             cursor: pointer;
             position: relative;
@@ -799,7 +979,7 @@
         .play-button-icon {
             width: 56px;
             height: 56px;
-            background-color: rgba(12, 14, 16, 0.85);
+            background-color: rgba(var(--piano-black-rgb), 0.85);
             border: 1px solid var(--brass-gold);
             border-radius: 50%;
             display: flex;
@@ -867,7 +1047,7 @@
 
         .testimonial-card {
             background-color: var(--piano-black);
-            border: 1px solid rgba(250, 248, 245, 0.03);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.05);
             border-radius: 6px;
             padding: 3rem 2.5rem;
             display: flex;
@@ -883,7 +1063,7 @@
             font-family: var(--font-serif);
             font-size: 5rem;
             line-height: 1;
-            color: rgba(197, 160, 89, 0.08);
+            color: rgba(var(--brass-gold-rgb), 0.08);
             pointer-events: none;
         }
 
@@ -902,7 +1082,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-top: 1px solid rgba(250, 248, 245, 0.05);
+            border-top: 1px solid rgba(var(--ivory-cream-rgb), 0.08);
             padding-top: 1.5rem;
         }
 
@@ -944,7 +1124,7 @@
         details {
             background-color: var(--slate-gray);
             border-radius: 6px;
-            border: 1px solid rgba(250, 248, 245, 0.03);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.05);
             transition: var(--transition);
         }
 
@@ -1069,13 +1249,13 @@
         /* Contact Form */
         .contact-form {
             background-color: var(--piano-black);
-            border: 1px solid rgba(250, 248, 245, 0.03);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.05);
             border-radius: 6px;
             padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, var(--shadow-opacity, 0.4));
         }
 
         .form-group {
@@ -1100,7 +1280,7 @@
 
         .form-control {
             background-color: var(--slate-gray);
-            border: 1px solid rgba(250, 248, 245, 0.08);
+            border: 1px solid rgba(var(--ivory-cream-rgb), 0.12);
             border-radius: 4px;
             padding: 0.9rem 1.2rem;
             color: var(--ivory-cream);
@@ -1112,7 +1292,7 @@
 
         .form-control:focus {
             border-color: var(--brass-gold);
-            box-shadow: 0 0 10px rgba(197, 160, 89, 0.1);
+            box-shadow: 0 0 10px rgba(var(--brass-gold-rgb), 0.1);
         }
 
         textarea.form-control {
@@ -1128,7 +1308,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(12, 14, 16, 0.98);
+            background-color: rgba(var(--piano-black-rgb), 0.98);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -1176,7 +1356,7 @@
         /* Footer */
         footer {
             padding: 3rem 2rem;
-            border-top: 1px solid rgba(250, 248, 245, 0.05);
+            border-top: 1px solid rgba(var(--ivory-cream-rgb), 0.08);
             font-size: 0.8rem;
             color: var(--text-muted);
         }
@@ -1330,6 +1510,27 @@
     </style>
 </head>
 <body>
+
+    <!-- Theme Picker Bar -->
+    <div class="theme-picker-bar">
+        <div class="theme-picker-container">
+            <span class="theme-picker-label"><span class="preview-badge">Preview Mode</span> Select Theme Candidate:</span>
+            <div class="theme-picker-options">
+                <button class="theme-btn active" data-theme="classic" onclick="setTheme('classic')">
+                    <span class="theme-dot classic"></span> Classic Dark
+                </button>
+                <button class="theme-btn" data-theme="bridal" onclick="setTheme('bridal')">
+                    <span class="theme-dot bridal"></span> Bridal Wedding
+                </button>
+                <button class="theme-btn" data-theme="warm" onclick="setTheme('warm')">
+                    <span class="theme-dot warm"></span> Warm Sunset
+                </button>
+                <button class="theme-btn" data-theme="royal" onclick="setTheme('royal')">
+                    <span class="theme-dot royal"></span> Royal Indigo
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Ambient Background Glow -->
     <div class="hero-bg"></div>
@@ -1987,6 +2188,66 @@
 
     <!-- JavaScript Interactivity -->
     <script>
+        // Theme Selection Logic
+        function setTheme(themeName) {
+            // Remove all theme classes from body
+            document.body.classList.remove('theme-classic', 'theme-bridal', 'theme-warm', 'theme-royal');
+            
+            // Add selected theme class
+            document.body.classList.add('theme-' + themeName);
+            
+            // Update active state in theme buttons
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-theme') === themeName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Update hero image sources
+            const heroImg = document.getElementById('hero-img');
+            if (heroImg) {
+                if (themeName === 'classic') {
+                    heroImg.src = 'images/piano_hero.jpg';
+                    heroImg.alt = 'Close-up of a grand piano on stage with concert hall lighting';
+                } else if (themeName === 'bridal') {
+                    heroImg.src = 'images/wedding_piano.jpg';
+                    heroImg.alt = 'White grand piano decorated with flowers at a wedding reception';
+                } else if (themeName === 'warm') {
+                    heroImg.src = 'images/warm_piano.jpg';
+                    heroImg.alt = 'Grand piano in a cozy performance room with warm amber lighting';
+                } else if (themeName === 'royal') {
+                    heroImg.src = 'images/royal_piano.jpg';
+                    heroImg.alt = 'Grand piano on stage under dramatic blue and gold spotlights';
+                }
+            }
+            
+            // Save theme preference to localStorage
+            localStorage.setItem('selectedTheme', themeName);
+            
+            // Adjust header and section spacings
+            setTimeout(adjustThemeBarHeight, 50);
+        }
+        
+        function adjustThemeBarHeight() {
+            const bar = document.querySelector('.theme-picker-bar');
+            if (bar) {
+                const height = bar.offsetHeight;
+                document.documentElement.style.setProperty('--theme-bar-height', height + 'px');
+            }
+        }
+        
+        window.addEventListener('load', adjustThemeBarHeight);
+        window.addEventListener('resize', adjustThemeBarHeight);
+        
+        // Auto-initialize theme on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'classic';
+            setTheme(savedTheme);
+            adjustThemeBarHeight();
+        });
         // Responsive Mobile Menu
         const burgerBtn = document.getElementById('burger');
         const mobMenu = document.getElementById('mob-menu');
